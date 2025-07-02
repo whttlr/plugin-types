@@ -1,0 +1,62 @@
+name: Publish to NPM
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 1.0.0)'
+        required: true
+
+jobs:
+  sync-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Sync types from electron app
+        env:
+          ELECTRON_APP_PATH: ../electron-app
+        run: |
+          # Clone electron app (or use submodule)
+          git clone https://github.com/whttlr/electron-app.git ../electron-app || echo "Electron app not available, using existing types"
+          
+          # Run sync if electron app is available
+          if [ -d "../electron-app" ]; then
+            npm run sync
+          else
+            echo "⚠️ Electron app not found, publishing with existing types"
+          fi
+          
+      - name: Build package
+        run: npm run build
+        
+      - name: Run tests
+        run: npm test
+        
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Create GitHub release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false

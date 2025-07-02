@@ -1,0 +1,50 @@
+{
+  "name": "@whttlr/plugin-types",
+  "version": "1.0.0",
+  "description": "TypeScript type definitions for Whttlr application plugins",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "sync": "node scripts/sync-from-electron.js",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Add tests here\" && exit 0",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whttlr/plugin-types.git"
+  },
+  "keywords": [
+    "whttlr",
+    "plugin",
+    "typescript",
+    "types",
+    "definitions",
+    "cnc",
+    "electron"
+  ],
+  "author": "Whttlr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/whttlr/plugin-types/issues"
+  },
+  "homepage": "https://github.com/whttlr/plugin-types#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}

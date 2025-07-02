@@ -1,0 +1,96 @@
+name: Sync Types from Electron App
+
+on:
+  repository_dispatch:
+    types: [api-updated]
+  schedule:
+    # Run daily at 2 AM UTC to check for drift
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      electron_app_ref:
+        description: 'Electron app branch/tag to sync from'
+        default: 'main'
+        required: false
+
+jobs:
+  sync-types:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin-types
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Clone electron app
+        env:
+          REF: ${{ github.event.inputs.electron_app_ref || 'main' }}
+        run: |
+          git clone --branch $REF https://github.com/whttlr/electron-app.git ../electron-app
+          
+      - name: Sync types
+        env:
+          ELECTRON_APP_PATH: ../electron-app
+        run: npm run sync
+        
+      - name: Check for changes
+        id: changes
+        run: |
+          git add .
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Commit changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "🔄 Auto-sync types from electron app
+          
+          Synced from: whttlr/electron-app@${{ github.event.inputs.electron_app_ref || 'main' }}
+          Triggered by: ${{ github.event_name }}"
+          
+      - name: Create Pull Request
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 🔄 Auto-sync types from electron app
+          title: 🔄 Auto-sync types from electron app
+          body: |
+            This PR contains automatically synchronized type definitions from the electron app.
+            
+            **Source**: whttlr/electron-app@${{ github.event.inputs.electron_app_ref || 'main' }}
+            **Triggered by**: ${{ github.event_name }}
+            **Timestamp**: ${{ github.event.head_commit.timestamp }}
+            
+            Please review the changes and merge if everything looks correct.
+            
+            ## Changes
+            - Updated type definitions to match electron app
+            - Synchronized configuration interfaces
+            - Updated database types
+            
+            ## Next Steps
+            After merging:
+            1. Create a new version tag to trigger npm publish
+            2. Update plugin-registry to use new types
+            3. Notify plugin developers of any breaking changes
+          branch: auto-sync-types
+          delete-branch: true
+          
+      - name: No changes detected
+        if: steps.changes.outputs.has_changes == 'false'
+        run: |
+          echo "✅ No type changes detected - types are in sync!"
