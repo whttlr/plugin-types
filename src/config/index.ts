@@ -1,3 +1,6 @@
+// This file is auto-generated from index.ts
+// Do not edit manually - changes will be overwritten
+
 // Configuration Types Module - Public API
 // Re-exports all configuration type definitions organized by domain
 

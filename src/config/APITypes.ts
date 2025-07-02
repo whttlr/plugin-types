@@ -1,47 +1,66 @@
-// API Configuration Types
-// Type definitions for API configuration
+// This file is auto-generated from APITypes.ts
+// Do not edit manually - changes will be overwritten
 
+// API Configuration Types
+// Type definitions for API endpoints, networking, and communication configuration schemas
+
+import { LatencyRange } from './CommonTypes';
+
+// API Endpoint Types
+export interface MachineEndpoints {
+  status: string;
+  position: string;
+  connect: string;
+  disconnect: string;
+  home: string;
+  jog: string;
+  settings: string;
+}
+
+export interface WorkspaceEndpoints {
+  dimensions: string;
+  bounds: string;
+  settings: string;
+}
+
+export interface SystemEndpoints {
+  health: string;
+  version: string;
+  diagnostics: string;
+}
+
+export interface APIEndpoints {
+  base: string;
+  machine: MachineEndpoints;
+  workspace: WorkspaceEndpoints;
+  system: SystemEndpoints;
+}
+
+// Network Configuration Types
+export interface TimeoutConfig {
+  default: number;
+  position: number;
+  status: number;
+  connection: number;
+}
+
+export interface RetryConfig {
+  maxAttempts: number;
+  delay: number;
+  backoffMultiplier: number;
+}
+
+export interface MockConfig {
+  enabled: boolean;
+  simulateLatency: boolean;
+  latencyRange: LatencyRange;
+  errorRate: number;
+}
+
+// Main API Configuration
 export interface APIConfig {
-  server: {
-    host: string;
-    port: number;
-    protocol: 'http' | 'https';
-    timeout: number;
-    retries: number;
-    retryDelay: number;
-  };
-  endpoints: {
-    base: string;
-    machine: string;
-    files: string;
-    plugins: string;
-    config: string;
-    status: string;
-  };
-  authentication: {
-    enabled: boolean;
-    type: 'none' | 'basic' | 'bearer' | 'oauth';
-    credentials?: {
-      username?: string;
-      password?: string;
-      token?: string;
-    };
-  };
-  rateLimit: {
-    enabled: boolean;
-    requestsPerMinute: number;
-    burstLimit: number;
-  };
-  cors: {
-    enabled: boolean;
-    origins: string[];
-    methods: string[];
-    headers: string[];
-  };
-  logging: {
-    enabled: boolean;
-    level: 'error' | 'warn' | 'info' | 'debug';
-    requests: boolean;
-    responses: boolean;
-  };
+  endpoints: APIEndpoints;
+  timeouts: TimeoutConfig;
+  retries: RetryConfig;
+  mock: MockConfig;
 }

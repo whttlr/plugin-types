@@ -24,3 +24,16 @@ export interface PermissionGrant {
   grantedAt: Date;
   grantedBy: 'user' | 'system';
 }
+
+// Valid permissions array for validation
+export const VALID_PERMISSIONS: Permission[] = [
+  'machine.read',
+  'machine.write', 
+  'machine.control',
+  'status.read',
+  'files.read',
+  'files.write',
+  'config.read',
+  'config.write',
+  'network.access'
+];

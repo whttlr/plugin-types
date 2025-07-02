@@ -1,101 +1,119 @@
-// UI Configuration Types
-// Type definitions for user interface configuration
+// This file is auto-generated from UITypes.ts
+// Do not edit manually - changes will be overwritten
 
-import { ColorScheme, Size } from './CommonTypes';
+// UI Configuration Types
+// Type definitions for UI theme, layout, and visualization configuration schemas
+
+import {
+  AxisColors, CameraPosition, CanvasSize, Breakpoints,
+} from './CommonTypes';
+
+// Theme Configuration Types
+export interface ThemeConfig {
+  primaryColor: string;
+  axisColors: AxisColors;
+}
+
+export interface LayoutConfig {
+  defaultCardSize: string;
+  defaultGutter: [number, number];
+  containerPadding: string;
+  maxWidth: string;
+}
+
+export interface AnimationConfig {
+  transitionDuration: string;
+  easingFunction: string;
+}
 
 export interface UIConfig {
-  theme: 'light' | 'dark' | 'auto';
-  colorScheme: ColorScheme;
-  fontSize: number;
-  fontFamily: string;
-  language: string;
-  layout: {
-    sidebar: {
-      position: 'left' | 'right';
-      width: number;
-      collapsed: boolean;
-    };
-    toolbar: {
-      position: 'top' | 'bottom';
-      height: number;
-      visible: boolean;
-    };
-    statusBar: {
-      visible: boolean;
-      height: number;
-    };
-  };
-  window: {
-    defaultSize: Size;
-    minSize: Size;
-    maximized: boolean;
-    fullscreen: boolean;
-    alwaysOnTop: boolean;
-    resizable: boolean;
-  };
-  grid: {
-    visible: boolean;
-    size: number;
-    color: string;
-    opacity: number;
-  };
-  coordinates: {
-    visible: boolean;
-    precision: number;
-    units: 'metric' | 'imperial';
-  };
-  animations: {
-    enabled: boolean;
-    duration: number;
-    easing: string;
-  };
-  accessibility: {
-    highContrast: boolean;
-    reducedMotion: boolean;
-    screenReader: boolean;
-  };
+  theme: ThemeConfig;
+  layout: LayoutConfig;
+  animations: AnimationConfig;
+}
+
+// Visualization Configuration Types
+export interface Preview2DConfig {
+  canvasSize: CanvasSize;
+  gridLines: boolean;
+  showAxes: boolean;
+  backgroundColor: string;
+}
+
+export interface CameraConfig {
+  fov: number;
+  near: number;
+  far: number;
+  position: [number, number, number];
+}
+
+export interface LightingVisualizationConfig {
+  ambientIntensity: number;
+  directionalIntensity: number;
+}
+
+export interface MaterialsConfig {
+  machineColor: string;
+  toolColor: string;
+  gridColor: string;
+}
+
+export interface Preview3DConfig {
+  camera: CameraConfig;
+  lighting: LightingVisualizationConfig;
+  materials: MaterialsConfig;
 }
 
 export interface VisualizationConfig {
-  renderer: '2d' | '3d';
-  quality: 'low' | 'medium' | 'high';
-  antialiasing: boolean;
-  shadows: boolean;
-  lighting: boolean;
-  background: {
-    type: 'solid' | 'gradient' | 'image';
-    color: string;
-    gradientColors: string[];
-    imageUrl?: string;
-  };
-  camera: {
-    type: 'orthographic' | 'perspective';
-    position: {
-      x: number;
-      y: number;
-      z: number;
-    };
-    target: {
-      x: number;
-      y: number;
-      z: number;
-    };
-    zoom: number;
-  };
-  toolpath: {
-    visible: boolean;
-    color: string;
-    width: number;
-    opacity: number;
-  };
-  workpiece: {
-    visible: boolean;
-    color: string;
-    opacity: number;
-  };
-  machine: {
-    visible: boolean;
-    color: string;
-    opacity: number;
-  };
+  preview2D: Preview2DConfig;
+  preview3D: Preview3DConfig;
+}
+
+// UI Defaults Types
+export interface UIThemeDefaults {
+  primaryColor: string;
+  borderRadius: number;
+  spacing: number;
+}
+
+export interface AnimationDefaults {
+  enabled: boolean;
+  duration: number;
+  easing: string;
+}
+
+export interface ResponsivenessConfig {
+  breakpoints: Breakpoints;
+}
+
+export interface UIDefaults {
+  theme: UIThemeDefaults;
+  animations: AnimationDefaults;
+  responsiveness: ResponsivenessConfig;
+}
+
+// Preview Defaults Types
+export interface LightingConfig {
+  ambient: number;
+  directional: number;
+}
+
+export interface Preview2DDefaults {
+  backgroundColor: string;
+  gridColor: string;
+  axisColors: AxisColors;
+  toolColor: string;
+  refreshRate: number;
+}
+
+export interface Preview3DDefaults {
+  backgroundColor: string;
+  cameraPosition: CameraPosition;
+  lighting: LightingConfig;
+  refreshRate: number;
+}
+
+export interface VisualizationDefaults {
+  preview2D: Preview2DDefaults;
+  preview3D: Preview3DDefaults;
 }

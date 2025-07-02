@@ -2,3 +2,4 @@
 // Re-exports all plugin-related type definitions
 
 export * from './PluginManifest';
+export * from './PluginRegistry';

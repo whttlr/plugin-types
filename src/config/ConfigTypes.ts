@@ -1,3 +1,6 @@
+// This file is auto-generated from ConfigTypes.ts
+// Do not edit manually - changes will be overwritten
+
 // Main Configuration Types
 // Central configuration interfaces and service-related types
 

@@ -1,5 +1,7 @@
+// This file is auto-generated from types.ts
+// Do not edit manually - changes will be overwritten
+
 // Database Service Types
-// Exact types from electron app database service
 
 export interface PluginRecord {
   id: string;

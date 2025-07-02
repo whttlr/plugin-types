@@ -10,7 +10,7 @@ const SRC_DIR = path.join(SCRIPT_DIR, '..', 'src');
 const SOURCE_MAPPINGS = {
   // Map target directories to source directories/files in electron app
   'config/': 'src/services/config/types/',
-  'database/': 'src/services/database/types.ts',
+  'database/index.ts': 'src/services/database/types.ts',
 };
 
 function syncTypes() {
@@ -119,18 +119,27 @@ function syncTypeScriptFile(sourcePath, targetPath) {
 function transformTypeScriptContent(content, sourcePath) {
   let transformed = content;
 
-  // Remove implementation code, keep only types
-  // This is a basic transformation - more sophisticated parsing may be needed
-  
-  // Remove function implementations (keep only signatures)
-  transformed = transformed.replace(/{\s*\/\/[^}]*}/g, ';');
-  transformed = transformed.replace(/{\s*[^}]*}/g, ';');
+  // These files are already type definitions, so we mostly preserve them as-is
+  // Just fix import paths and add header
   
   // Fix import paths to be relative to the package structure
   transformed = transformed.replace(/from ['"]\.\.?\/[^'"]*['"]/g, (match) => {
     // Transform relative imports to package-relative imports
-    // This is a simplified transform - you may need more sophisticated logic
-    return match.replace(/\.\.\//g, './').replace(/\.\//g, './');
+    const importPath = match.match(/from ['"](.*)['"]/)[1];
+    
+    // If it's a relative import within the same types directory, keep it relative
+    if (importPath.startsWith('./')) {
+      return match; // Keep as-is
+    }
+    
+    // If it's going up a level, convert to local import
+    if (importPath.startsWith('../')) {
+      // Remove ../ and convert to local import
+      const localPath = importPath.replace(/^\.\.\//, './');
+      return match.replace(importPath, localPath);
+    }
+    
+    return match;
   });
 
   // Add header comment

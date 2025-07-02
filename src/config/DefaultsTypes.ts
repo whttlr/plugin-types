@@ -1,38 +1,35 @@
-// Defaults Configuration Types
-// Type definitions for default values configuration
+// This file is auto-generated from DefaultsTypes.ts
+// Do not edit manually - changes will be overwritten
 
+// Defaults Configuration Types
+// Type definitions for default values and fallback configuration schemas
+
+import { IncrementConfig, SpeedConfig } from './CommonTypes';
+import { MachineDefaults } from './MachineTypes';
+import { UIDefaults, VisualizationDefaults } from './UITypes';
+
+// Jog Defaults Types
+export interface JogIncrements {
+  metric: IncrementConfig;
+  imperial: IncrementConfig;
+}
+
+export interface SafetyConfig {
+  maxDistancePerJog: number;
+  requireConfirmation: boolean;
+  enableSoftLimits: boolean;
+}
+
+export interface JogDefaults {
+  increments: JogIncrements;
+  speed: SpeedConfig;
+  safety: SafetyConfig;
+}
+
+// Main Defaults Configuration
 export interface DefaultsConfig {
-  machine: {
-    units: 'metric' | 'imperial';
-    workCoordinateSystem: string;
-    feedRate: number;
-    spindleSpeed: number;
-    jogSpeed: number;
-    jogIncrement: number;
-  };
-  ui: {
-    theme: 'light' | 'dark' | 'auto';
-    language: string;
-    showGrid: boolean;
-    showCoordinates: boolean;
-    autoConnect: boolean;
-  };
-  files: {
-    defaultDirectory: string;
-    supportedFormats: string[];
-    maxFileSize: number;
-    autoBackup: boolean;
-    backupInterval: number;
-  };
-  networking: {
-    timeout: number;
-    retries: number;
-    checkInterval: number;
-  };
-  plugins: {
-    autoLoad: boolean;
-    autoUpdate: boolean;
-    updateCheckInterval: number;
-    allowBeta: boolean;
-  };
+  machine: MachineDefaults;
+  jog: JogDefaults;
+  visualization: VisualizationDefaults;
+  ui: UIDefaults;
 }

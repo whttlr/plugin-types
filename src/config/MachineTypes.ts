@@ -1,3 +1,6 @@
+// This file is auto-generated from MachineTypes.ts
+// Do not edit manually - changes will be overwritten
+
 // Machine Configuration Types
 // Type definitions for machine-specific configuration schemas
 
