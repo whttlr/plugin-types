@@ -13,8 +13,9 @@
     "build": "tsc",
     "sync": "node scripts/sync-from-electron.js",
     "prepublishOnly": "npm run build",
-    "test": "npm run build && node dist/tests/compatibility.test.js",
+    "test": "npm run test:compatibility && npm run test:api",
     "test:compatibility": "npm run build && node dist/tests/compatibility.test.js",
+    "test:api": "npm run build && node dist/tests/api-compatibility.test.js",
     "watch": "tsc --watch",
     "clean": "rm -rf dist"
   },
