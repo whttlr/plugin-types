@@ -1,0 +1,24 @@
+# Source files (only ship compiled)
+src/tests/
+scripts/
+
+# Development files
+tsconfig.json
+.gitignore
+.npmignore
+CLAUDE.md
+PLUGIN_SYNC_AND_DEVELOPMENT_PLAN.md
+
+# Build artifacts
+*.tsbuildinfo
+
+# Editor and OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Logs and temp files
+*.log
+npm-debug.log*
+temp/
+tmp/

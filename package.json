@@ -10,14 +10,17 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "sync": "node scripts/sync-from-electron.js",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run typecheck && npm run build",
     "test": "npm run test:compatibility && npm run test:api",
     "test:compatibility": "npm run build && node dist/tests/compatibility.test.js",
     "test:api": "npm run build && node dist/tests/api-compatibility.test.js",
     "watch": "tsc --watch",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'TODO: Add ESLint configuration'",
+    "verify": "npm run typecheck && npm run test"
   },
   "repository": {
     "type": "git",
