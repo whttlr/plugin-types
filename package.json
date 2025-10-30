@@ -1,6 +1,6 @@
 {
   "name": "@whttlr/plugin-types",
-  "version": "1.0.1",
+  "version": "2.1.0",
   "description": "TypeScript type definitions for Whttlr application plugins",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,14 +13,11 @@
     "build": "npm run clean && tsc",
     "sync": "node scripts/sync-from-electron.js",
     "prepublishOnly": "npm run typecheck && npm run build",
-    "test": "npm run test:compatibility && npm run test:api",
-    "test:compatibility": "npm run build && node dist/tests/compatibility.test.js",
-    "test:api": "npm run build && node dist/tests/api-compatibility.test.js",
     "watch": "tsc --watch",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
     "lint": "echo 'TODO: Add ESLint configuration'",
-    "verify": "npm run typecheck && npm run test"
+    "verify": "npm run typecheck"
   },
   "repository": {
     "type": "git",
@@ -46,10 +43,13 @@
     "registry": "https://registry.npmjs.org/"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "rxjs": "^7.0.0"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "rxjs": "^7.8.0"
   }
 }

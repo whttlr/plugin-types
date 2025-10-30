@@ -1,5 +1,10 @@
-// @whttlr/plugin-types - Main Package Exports
-// Central export point for all plugin type definitions
+/**
+ * @whttlr/plugin-types - Main Package Exports
+ * Central export point for all plugin type definitions
+ */
+
+// Core plugin system types
+export * from './core';
 
 // Configuration types
 export * from './config';
@@ -15,3 +20,9 @@ export * from './plugin';
 
 // Permission system types
 export * from './permissions';
+
+// React integration types
+export * from './react';
+
+// Dashboard card and grid system types
+export * from './dashboard';

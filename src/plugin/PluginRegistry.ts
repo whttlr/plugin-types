@@ -1,18 +1,22 @@
-// Plugin Registry Types
-// Type definitions for plugin registry entries and manifest structure
-// Corresponds to the JSON schemas in the plugin-registry
+/**
+ * Plugin Registry Types
+ * Type definitions for plugin registry entries and marketplace structure
+ */
 
 import { Permission } from '../permissions';
+import { PluginCategory, PluginMainView } from './PluginManifest';
 
-// Enums and union types
-export type PluginCategory = 'monitoring' | 'control' | 'visualization' | 'utility' | 'automation' | 'management';
-export type PluginPlacement = 'dashboard' | 'standalone' | 'modal' | 'sidebar';
-export type PluginScreen = 'main' | 'controls' | 'settings' | 'new';
+/**
+ * Repository type
+ */
 export type RepositoryType = 'git' | 'svn' | 'hg';
 
-// Plugin Manifest (matches plugin-schema.json)
+/**
+ * Plugin registry manifest
+ * Extended manifest for registry distribution
+ */
 export interface PluginRegistryManifest {
-  /** Unique plugin identifier (lowercase, numbers, hyphens only) */
+  /** Unique plugin identifier (lowercase, numbers, hyphens, dots) */
   id: string;
 
   /** Human-readable plugin name */
@@ -45,11 +49,14 @@ export interface PluginRegistryManifest {
   /** Primary plugin category */
   category?: PluginCategory;
 
-  /** Where the plugin will be displayed in the UI */
-  placement: PluginPlacement;
+  /** View type determines UI placement */
+  mainView: PluginMainView;
 
-  /** Which screen the plugin appears on */
-  screen?: PluginScreen;
+  /** JavaScript entry file */
+  entryPoint?: string;
+
+  /** Plugin API version compatibility */
+  apiVersion?: string;
 
   /** Plugin size configuration */
   size?: {
@@ -91,7 +98,10 @@ export interface PluginRegistryManifest {
   changelog?: string;
 }
 
-// Plugin Registry Entry (matches registry-schema.json plugins array items)
+/**
+ * Plugin registry entry
+ * Catalog entry for a plugin in the marketplace
+ */
 export interface PluginRegistryEntry {
   /** Unique plugin identifier */
   id: string;
@@ -139,7 +149,10 @@ export interface PluginRegistryEntry {
   featured?: boolean;
 }
 
-// Plugin Registry Structure (matches registry-schema.json)
+/**
+ * Plugin registry structure
+ * Complete marketplace catalog
+ */
 export interface PluginRegistry {
   /** Registry schema version */
   version: string;
@@ -161,34 +174,43 @@ export interface PluginRegistry {
   };
 }
 
-// Validation utilities and constants
+/**
+ * Validation utilities and constants
+ */
+
 export const VALID_PLUGIN_CATEGORIES: PluginCategory[] = [
-  'monitoring', 'control', 'visualization', 'utility', 'automation', 'management'
+  'monitoring',
+  'control',
+  'visualization',
+  'utility',
+  'automation',
+  'management',
 ];
 
-export const VALID_PLUGIN_PLACEMENTS: PluginPlacement[] = [
-  'dashboard', 'standalone', 'modal', 'sidebar'
-];
-
-export const VALID_PLUGIN_SCREENS: PluginScreen[] = [
-  'main', 'controls', 'settings', 'new'
+export const VALID_MAIN_VIEWS: PluginMainView[] = [
+  'dashboard',
+  'standalone',
+  'modal',
+  'sidebar',
 ];
 
 export const VALID_REPOSITORY_TYPES: RepositoryType[] = [
-  'git', 'svn', 'hg'
+  'git',
+  'svn',
+  'hg',
 ];
 
-// Plugin ID validation pattern
-export const PLUGIN_ID_PATTERN = /^[a-z0-9-]+$/;
+/** Plugin ID validation pattern (lowercase, numbers, hyphens, dots) */
+export const PLUGIN_ID_PATTERN = /^[a-z0-9.-]+$/;
 
-// Version validation pattern (semantic versioning)
+/** Version validation pattern (semantic versioning) */
 export const VERSION_PATTERN = /^\d+\.\d+\.\d+$/;
 
-// URL validation pattern
+/** URL validation pattern */
 export const URL_PATTERN = /^https?:\/\//;
 
-// ISO 8601 timestamp pattern
+/** ISO 8601 timestamp pattern */
 export const ISO_TIMESTAMP_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
 
-// Route path validation pattern (for standalone plugins)
+/** Route path validation pattern (for standalone plugins) */
 export const ROUTE_PATH_PATTERN = /^\/[a-z0-9-/]*$/;
